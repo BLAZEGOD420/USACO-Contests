@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int main() {
+	ifstream fin ("breedflip.in");
+	ofstream fout ("breedflip.out");
+
+	int N, streak = 0, out= 0;
+	string A;
+	string B;
+
+	fin >> N >> A >> B;
+
+	for (int i = 0; i < N; i++) {
+		if (A[i] == B[i]) {
+			if (streak > 0) {
+				out += 1;
+			}
+			streak = 0;
+		}
+		else {
+			streak++;
+		}
+	}
+		
+	fout << out << endl;
+	
+}

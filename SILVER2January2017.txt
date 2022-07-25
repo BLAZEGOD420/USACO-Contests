@@ -1,0 +1,58 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+#include <set>
+#include <queue>
+
+using namespace std;
+
+int hPrefix[100001];
+int pPrefix[100001];
+int sPrefix[100001];
+
+int main()
+{
+	ifstream fin ("hps.in");
+	ofstream fout ("hps.out");
+
+	int N;
+	fin >> N;
+	char gesture;
+
+	for (int i = 1; i <= N; ++i)
+	{
+		fin >> gesture;
+		switch(gesture)
+		{
+			case 'H':
+				hPrefix[i]++;
+				break;
+			case 'P':
+				pPrefix[i]++;
+				break;
+			case 'S':
+				sPrefix[i]++;
+				break;
+		}
+	}
+
+	for (int i = 1; i <= N; ++i)
+	{
+		hPrefix[i] += hPrefix[i - 1];
+		pPrefix[i] += pPrefix[i - 1];
+		sPrefix[i] += sPrefix[i - 1];
+	}
+
+	int out = 0;
+
+	for (int left, right, x = 0; x <= N; ++x)
+	{
+		left = max(max(hPrefix[x] - hPrefix[0], pPrefix[x] - pPrefix[0]), sPrefix[x] - sPrefix[0]);
+		right = max(max(hPrefix[N] - hPrefix[x], pPrefix[N] - pPrefix[x]), sPrefix[N] - sPrefix[x]);
+		out = max(out, left + right);
+	}
+	
+	fout << out << endl;
+	return 0;
+}

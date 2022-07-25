@@ -1,0 +1,73 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+	int max = 0;
+	int min = 1000000001;
+};
+
+
+int main()
+{
+	ifstream fin ("split.in");
+	ofstream fout ("split.out");
+	int N;
+	fin >> N;
+	
+	map<int, Node> points;
+	
+	for (int x, y, i = 0; i < N; ++i)
+	{
+		fin >> x >> y;
+		points[x].max = max(y, points[x].max);
+		points[x].min = min(y, points[x].min);
+	}
+	
+
+	N = points.size();
+	
+	int right_y_max[N + 1];
+	int right_y_min[N + 1];
+	right_y_max[N] = 0;
+	right_y_min[N] = 1000000001;
+
+	map<int, Node>::iterator itr = points.end();
+	
+	for (int i = N - 1; i >= 0; --i)
+	{
+		--itr;
+		right_y_max[i] = max(itr->second.max, right_y_max[i + 1]);
+		right_y_min[i] = min(itr->second.min, right_y_min[i + 1]);
+	}
+	itr = points.end();
+	--itr;
+	int x_min = points.begin()->first, x_max = itr->first;
+	long long out = (x_max - x_min) * (right_y_max[0] - right_y_min[0]);
+	itr = points.begin();
+	++itr;
+	long long left, right = (x_max - itr->first) * (right_y_max[1] - right_y_min[1]);
+	long long area = right;
+	int left_y_max = points[x_min].max, left_y_min = points[x_min].min;
+
+	for (int i = 1; i < N - 1; ++i)
+	{
+		left_y_max = max(left_y_max, itr->second.max);
+		left_y_min = min(left_y_min, itr->second.min);
+		left = (itr->first - x_min) * (left_y_max - left_y_min);
+		right = (x_max - (++itr)->first) * (right_y_max[i + 1] - right_y_min[i + 1]);;
+		area = min(area, left + right);
+	}
+	
+	left_y_max = max(left_y_max, itr->second.max);
+	left_y_min = min(left_y_min, itr->second.min);
+	left = (itr->first - x_min) * (left_y_max - left_y_min);
+	area = min(area, left);
+	
+	fout << out - area << endl;
+	
+	return 0;
+}

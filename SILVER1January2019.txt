@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int N, neighbors[100000];
+
+int main() {
+	ifstream fin ("planting.in");
+	ofstream fout ("planting.out");
+
+	fin >> N;
+	
+	for (int i = 0; i < N - 1; i++) {
+		int a, b;
+		fin >> a >> b;
+		neighbors[a - 1]++;
+		neighbors[b - 1]++;
+	}
+
+	sort(neighbors, neighbors + N);
+	
+	fout << neighbors[N - 1] + 1 << endl;
+}

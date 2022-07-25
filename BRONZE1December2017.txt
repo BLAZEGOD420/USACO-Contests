@@ -1,0 +1,27 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+struct Rectangle {
+	int x1, y1, x2, y2;
+	int area() {
+		return (y2 - y1) * (x2 - x1);
+	}
+};
+
+int intersection(Rectangle j, Rectangle k) {
+	return max(min(j.y2, k.y2) - max(j.y1, k.y1), 0) * max(min(j.x2, k.x2) - max(j.x1, k.x1), 0);
+}
+int main() {
+	ifstream fin ("billboard.in");
+	ofstream fout ("billboard.out");
+	Rectangle a, b, t;
+	
+	fin >> a.x1 >> a.y1 >> a.x2 >> a.y2;
+	fin >> b.x1 >> b.y1 >> b.x2 >> b.y2;
+	fin >> t.x1 >> t.y1 >> t.x2 >> t.y2;
+	
+	fout << a.area() + b.area() - intersection(a, t) - intersection(b, t);
+}

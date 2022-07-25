@@ -1,0 +1,55 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int N, b[101], e[101], m[101], day, change, bessie, elsie, mildred, highest, num;
+string cow, previous = "bme", current;
+
+int main() {
+	ifstream fin ("measurement.in");
+	ofstream fout ("measurement.out");
+	
+	fin >> N;
+	
+	for (int i = 0; i < N; i++) {
+		fin >> day >> cow >> change;
+		if (cow == "Bessie"){
+			b[day] = change;
+		}
+		else if (cow == "Mildred"){
+			m[day] = change;
+		}
+		else {
+			e[day] = change;
+		}
+	}
+
+	for (int i = 0; i < 101; i++) {
+		current = "";
+		bessie += b[i];
+		elsie += e[i];
+		mildred += m[i];
+	
+		highest = max(max(bessie, elsie), mildred);
+		
+		if (bessie == highest) {
+			current += "b";
+		}
+		if (mildred == highest) {
+			current += "m";
+		}
+		if (elsie == highest) {
+			current += "e";
+		}
+	
+		if (current != previous) {
+			num += 1;
+			previous = current;
+		}
+	}
+	
+	fout << num;
+}

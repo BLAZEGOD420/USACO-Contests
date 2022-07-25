@@ -1,0 +1,94 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int one[202][202];
+int two[202][202];
+int leftMax[202];
+int rightMax[202];
+int upMax[202];
+int downMax[202];
+
+int main() {
+	ifstream fin ("paintbarn.in");
+	ofstream fout ("paintbarn.out");
+
+	int N, K, base = 0;
+	fin >> N >> K;
+
+	for (int i = 0; i < N; i++) {
+		int x1, y1, x2, y2;
+		fin >> x1 >> y1 >> x2 >> y2;
+		x1++;
+		y1++;
+		x2++;
+		y2++;
+
+		one[x1][y1]++;
+		one[x2][y2]++;
+		one[x1][y2]--;
+		one[x2][y1]--;
+	}
+
+	for (int i = 1; i < 202; i++) {
+		for (int j = 1; j < 202; j++) {
+			one[i][j] += one[i - 1][j] + one[i][j - 1] - one[i - 1][j - 1];
+			if (one[i][j] == K - 1) {
+				two[i][j] = 1;
+			}
+			else if (one[i][j] == K) {
+				two[i][j] = -1;
+				base++;
+			}
+			
+			two[i][j] += two[i - 1][j] + two[i][j - 1] - two[i - 1][j - 1];
+		}
+	}
+
+	for (int i = 1; i < 202; i++) {
+		for (int j = i; j < 202; j++) {
+			int startingY = 1;
+			for (int k = 1; k < 202; k++) {
+				int sum = two[j][k] - two[j][startingY - 1] - two[i - 1][k] + two[i - 1][startingY - 1];
+				if (sum < 0) {
+					sum = 0;
+					startingY = k + 1;
+				}
+				else {
+					upMax[k] = max(upMax[k], sum);
+					downMax[startingY] = max(downMax[startingY], sum);
+					leftMax[j] = max(leftMax[j], sum);
+					rightMax[i] = max(rightMax[i], sum);
+				}
+			}
+		}
+	}
+
+	for (int i = 200; i > 0; i--) {
+		downMax[i] = max(downMax[i], downMax[i + 1]);
+		rightMax[i] = max(rightMax[i], rightMax[i + 1]);
+	}
+	for (int i = 2; i < 202; i++) {
+		upMax[i] = max(upMax[i], upMax[i - 1]);
+		leftMax[i] = max(leftMax[i], leftMax[i - 1]);
+	}
+
+	int out = 0;
+
+	for (int i = 1; i < 201; i++) {
+		out = max(out, upMax[i] + downMax[i + 1]);
+		out = max(out, leftMax[i] + rightMax[i + 1]);
+	}
+
+	fout << out + base << endl;
+	
+}

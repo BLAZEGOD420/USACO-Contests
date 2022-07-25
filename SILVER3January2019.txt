@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+coordinate compressed
+mountain i is covered by j if the base of i falls within the base of j
+the base of a mountain of coordinates x, y is bounded by the height. the mountain has 45 degree angle, meaning that the base has x coordinates (x - height, x + height)
+so, xj - yj <= xi - yi && xj + yj >= xi - yi
+*/
+
+int sum[100000];
+int diff[100000];
+int indexes[100000];
+
+bool compare(int a, int b)
+{
+	if (diff[a] == diff[b]) return sum[a] > sum[b];
+	return diff[a] < diff[b];
+}
+
+int main()
+{
+	ifstream fin ("mountains.in");
+	ofstream fout ("mountains.out");
+	int N;
+	fin >> N;
+	
+	for (int x, y, i = 0; i < N; ++i)
+	{
+		fin >> x >> y;
+		indexes[i] = i;
+		sum[i] = x + y;
+		diff[i] = x - y;
+	}
+
+	sort(indexes, indexes + N, compare);
+	int max_sum = -1;
+	int out = 0;
+	
+	for (int i = 0; i < N; ++i)
+	{
+		if (sum[indexes[i]] > max_sum)
+		{
+			max_sum = sum[indexes[i]];
+			++out;
+		}
+	}
+
+	fout << out << endl;
+	return 0;
+}

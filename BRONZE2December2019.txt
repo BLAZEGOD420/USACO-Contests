@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int main() {
+	ifstream fin ("whereami.in");
+	ofstream fout ("whereami.out");
+
+	int N;
+	fin >> N;
+	string colors;
+	fin >> colors;
+
+	for (int i = 1; i <= N; i++) {
+		set<string> temp;
+
+		for (int j = 0; j <= N - i; j++) {
+			temp.insert(colors.substr(j, i));
+		}
+
+		if (temp.size() == N - i + 1) {
+			fout << i << endl;
+			break;
+		}
+	}
+}

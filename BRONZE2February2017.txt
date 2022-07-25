@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int out;
+string pos;
+
+int count(char y, string x) {
+	int num = 0;
+		
+	for (int i = 0; i < x.size(); i++) {
+		if (x[i] == y) {
+			num += 1;
+		}
+	}
+	
+	return num;
+};
+
+int main() {
+	ifstream fin ("circlecross.in");
+	ofstream fout ("circlecross.out");
+	
+	fin >> pos;
+
+	for (int start = 0; start < 52; start++) {
+		int end = pos.find_last_of(pos[start]);
+		
+		if (start != end) {
+			string sub = pos.substr(start + 1, end - start - 1);
+
+			for (int i = start + 1; i < end; i++) {
+				if (count(pos[i], sub) == 1) {
+					out += 1;
+				}
+			}
+		}
+	}
+
+	fout << out / 2;
+}

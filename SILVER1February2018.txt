@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+long long positions[10000], tastiness[10000];
+bool stop[10000];
+
+int main() {
+	ifstream fin ("reststops.in");
+	ofstream fout ("reststops.out");
+
+	long long L, N, rF, rB, out = 0;
+
+	fin >> L >> N >> rF >> rB;
+	
+	for (int i = 0; i < N; i++) {
+		fin >> positions[i] >> tastiness[i];
+	}
+	
+	int max = 0;
+
+	for (int i = N - 1; i >= 0; i--) {
+		if (tastiness[i] > max) {
+			stop[i] = true;
+			max = tastiness[i];
+		}
+	}
+	
+	int previous = 0;
+
+	for (int i = 0; i < N; i++) {
+		if (stop[i]) {
+			out += (positions[i] - previous) * (rF - rB) * tastiness[i];
+			previous = positions[i];
+		}
+	}
+
+	fout << out << endl;
+}

@@ -1,0 +1,52 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+struct Rectangle {
+	int x1, y1, x2, y2;
+	int area() {
+		return (y2 - y1) * (x2 - x1);
+	}
+};
+
+int intersection(Rectangle a, Rectangle b) {
+	return max(0, min(a.x2, b.x2) - max(a.x1, b.x1)) * max(0, min(a.y2, b.y2) - max(a.y1, b.y1));
+}
+
+int contains(Rectangle a, int x, int y) {
+	if (x >= a.x1 && x <= a.x2 && y >= a.y1 && y <= a.y2) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+int main() {
+	ifstream fin ("billboard.in");
+	ofstream fout ("billboard.out");
+	
+	Rectangle c, l, ans;
+	
+	fin >> l.x1 >> l.y1 >> l.x2 >> l.y2;
+	fin >> c.x1 >> c.y1 >> c.x2 >> c.y2;
+
+	int corners = 0;
+	corners += contains(c, l.x1, l.y1);
+	corners += contains(c, l.x1, l.y2);
+	corners += contains(c, l.x2, l.y1);
+	corners += contains(c, l.x2, l.y2);
+
+	if (intersection(c, l) == l.area()) {
+		fout << 0;
+	}
+	else if (corners >= 2) {
+		fout << l.area() - intersection(c, l);
+	}
+	else {
+		fout << l.area();
+	}
+}

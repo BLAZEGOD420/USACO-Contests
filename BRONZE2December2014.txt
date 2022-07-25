@@ -1,0 +1,29 @@
+fin = open('crosswords.in', 'r')
+fout = open('crosswords.out', 'w')
+
+N, M = (int(i) for i in fin.readline().rstrip("\n").split())
+
+crossword = [[0] * (M + 3)]
+
+for i in range(1, N + 1):
+	crossword.append([0] * (M + 3))
+	line = fin.readline().rstrip("\n")
+	for j in range(M):
+		if line[j] == '.':
+			crossword[i][j + 1] = 1
+
+points = []
+crossword.append([0] * (M + 3))
+crossword.append([0] * (M + 3))
+
+for i in range(1, N + 1):
+	for j in range(1, M + 1):
+		if crossword[i][j]:
+			if (not crossword[i][j - 1]) and crossword[i][j + 1] and crossword[i][j + 2]:
+				points.append([i, j])
+			elif (not crossword[i - 1][j]) and crossword[i + 1][j] and crossword[i + 2][j]:
+				points.append([i, j])
+
+fout.write(str(len(points)) + "\n")
+for i in range(len(points)):
+	fout.write(str(points[i][0]) + " " + str(points[i][1]) + "\n")

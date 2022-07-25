@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int N, amounts[26];
+string a, b;
+char c;
+
+int main() {
+	ifstream fin ("blocks.in");
+	ofstream fout ("blocks.out");
+
+	fin >> N;
+
+	for (int i = 0; i < N; i++) {
+		fin >> a >> b;
+		for (int j = 0; j < 26; j++) {
+			c = j + 97;
+			amounts[j] += max(count(a.begin(), a.end(), c), count(b.begin(), b.end(), c));
+		}
+	}
+	for (int i = 0; i < 26; i++) {
+		fout << amounts[i] << endl;
+	}
+}

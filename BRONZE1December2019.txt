@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int K, N, out;
+
+int main() {
+	
+	ifstream fin ("gymnastics.in");
+	ofstream fout ("gymnastics.out");
+
+	fin >> K >> N;
+
+	int cows[N][K];
+
+	for (int i = 0; i < K; i++) {
+		for (int j = 0; j < N; j++) {
+			int index;
+			fin >> index;
+			index -= 1;
+			
+			cows[index][i] = j;
+		}
+	}
+	
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if (i != j) {
+				int num = 0;
+				for (int k = 0; k < K; k++) {
+					if (cows[i][k] < cows[j][k]) {
+						num += 1;
+					}
+				}
+			
+				if (num == K) {
+					out += 1;
+				}
+			} 
+		}
+	}
+
+	fout << out;
+}

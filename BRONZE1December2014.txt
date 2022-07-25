@@ -1,0 +1,19 @@
+fin = open('marathon.in', 'r')
+fout = open('marathon.out', 'w')
+N = int(fin.readline().rstrip("\n"))
+checkpoints = []
+for i in range(N):
+	checkpoints.append([int(i) for i in fin.readline().rstrip("\n").split()])
+distances = []
+for i in range(1, N):
+	distances.append(abs(checkpoints[i - 1][0] - checkpoints[i][0]) + abs(checkpoints[i - 1][1] - checkpoints[i][1]))
+
+total = sum(distances)
+possible = []
+for i in range(1, N - 1):
+	possible.append(total - distances[i - 1] - distances[i] + abs(checkpoints[i - 1][0] - checkpoints[i + 1][0]) + abs(checkpoints[i - 1][1] - checkpoints[i + 1][1]))
+	
+possible.sort()
+fout.write(str(possible[0]) + "\n")
+
+	

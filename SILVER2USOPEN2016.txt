@@ -1,0 +1,63 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+using namespace std;
+
+int nums[50000];
+
+int main()
+{
+	ifstream fin ("diamond.in");
+	ofstream fout ("diamond.out");
+
+	int N, K;
+	fin >> N >> K;
+	for (int i = 0; i < N; ++i) fin >> nums[i];
+	sort(nums, nums + N);
+
+	int a = 0, b = 0, one = 0, maxB, maxA;
+	while (b < N)
+	{
+		if (nums[b] - nums[a] <= K)
+		{
+			if (b - a + 1 > one)
+			{
+				one = b - a + 1;
+				maxA = a;
+				maxB = b;
+			}
+			++b;
+		}
+		else ++a;
+	}
+
+	a = b = maxB + 1;
+	int two = 0;
+
+	while (b < N)
+	{
+		if (nums[b] - nums[a] <= K)
+		{
+			two = max(two, b - a + 1);
+			++b;
+		}
+		else ++a;
+	}
+
+	a = b = 0;
+
+	while (b < maxA)
+	{
+		if (nums[b] - nums[a] <= K)
+		{
+			two = max(two, b - a + 1);
+			++b;
+		}
+		else ++a;
+	}
+
+	fout << one + two << endl;
+
+	return 0;
+}

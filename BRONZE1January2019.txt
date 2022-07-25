@@ -1,0 +1,41 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int N, A[100], B[100], G[100], one[4], two[4], three[4];
+
+int main() {
+	ifstream fin ("shell.in");
+	ofstream fout ("shell.out");
+	
+	fin >> N;
+	
+	for (int i = 0; i < N; i++) {
+		fin >> A[i] >> B[i] >> G[i];
+	}
+	
+	one[1] = 1;
+	two[2] = 1;
+	three[3] = 1;
+	
+	for (int i = 0; i < N; i++) {
+		swap(one[A[i]], one[B[i]]);
+		swap(two[A[i]], two[B[i]]);
+		swap(three[A[i]], three[B[i]]);
+		if (one[G[i]] == 1){
+			one[0] += 1;
+		}
+		if (two[G[i]] == 1){
+			two[0] += 1;
+		}
+		if (three[G[i]] == 1){
+			three[0] += 1;
+		}
+	}
+	
+	fout << max(max(one[0], two[0]), three[0]);
+	
+}

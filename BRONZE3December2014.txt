@@ -1,0 +1,18 @@
+fin = open('cowjog.in', 'r')
+fout = open('cowjog.out', 'w')
+N = int(fin.readline().rstrip("\n"))
+
+cows = []
+
+for i in range(N):
+	cows.append(int(fin.readline().rstrip("\n").split()[1]))
+
+slowest = cows[-1]
+groups = 0
+
+for cow in reversed(cows):
+	if cow <= slowest:
+		slowest = cow
+		groups += 1
+
+fout.write(str(groups) + "\n")

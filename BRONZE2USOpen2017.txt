@@ -1,0 +1,49 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int N, M, out;
+
+int main() {
+
+	ifstream fin ("cownomics.in");
+	ofstream fout ("cownomics.out");
+
+	fin >> N >> M;
+		
+	char cows[N * 2][M];
+	
+	for (int i = 0; i < N * 2; i++) {
+		for (int j = 0; j < M; j++) {
+			fin >> cows[i][j];
+		}
+	}
+	
+
+	for (int i = 0; i < M; i++) {
+		int good = 1;
+
+		for (int j = 0; j < N; j++) {
+			for (int k = N; k < N * 2; k++) {
+				if (cows[j][i] == cows[k][i]) {
+					good = 0;
+					break;
+				}
+			}
+
+			if (!good) {
+				break;
+			}
+		}
+		
+		if (good) {
+			out += 1;
+		}
+	}
+	
+	fout << out;
+	
+}

@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int main() {
+	ifstream fin ("outofplace.in");
+	ofstream fout ("outofplace.out");
+	
+	int N, out = 0;
+	fin >> N;
+
+	int cows[N], sorted[N];
+	
+	for (int i = 0; i < N; i++) {
+		fin >> cows[i];
+		sorted[i] = cows[i];
+	}
+
+	sort(sorted, sorted + N);
+
+	for (int i = 0; i < N; i++) {
+		if (sorted[i] != cows[i]) out++;
+	}
+	
+	fout << out - 1 << endl;
+}

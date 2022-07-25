@@ -1,0 +1,40 @@
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+using namespace std;
+
+
+long long prefixSum[10002];
+pair<int, int> intervals[200000];
+long long num_a[5001];
+long long num_b[5001];
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+	
+	for (int a, b, i = 0; i < N; ++i)
+	{
+		cin >> a >> b;
+		++num_a[a];
+		++num_b[b];
+		intervals[i] = make_pair(a, b);
+	}
+	
+	for (int i = 0; i <= M; ++i)
+	{
+		for (int j = 0; j <= M; ++j)
+		{
+			prefixSum[i + j] += num_a[i] * num_a[j];
+			prefixSum[i + j + 1] -= num_b[i] * num_b[j];
+		}
+	}
+	
+	long long out = 0;
+	for (int i = 0; i <= 2 * M; ++i)
+	{
+		out += prefixSum[i];
+		cout << out << endl;
+	}
+}

@@ -1,0 +1,44 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+#include <set>
+#include <queue>
+
+using namespace std;
+
+/*
+keep a sorted set (1) of day, cow, change values
+keep a sorted set (2) of all of the cow, production pairs
+iterate over 1 and then update the cow, production pair. see if the max cow changed somehow?
+*/
+
+int main()
+{
+    ifstream fin ("measurement.in");
+    ofstream fout ("measurement.out");
+
+    int N, G;
+    fin >> N >> G;
+
+    set<pair<int, int>> cows;
+    vector<pair<int, pair<int, int>>> measurements(N);
+
+    for (int a, b, c, i = 0, i < N; ++i)
+    {
+        fin >> a >> b >> c;
+        measurments[i] = make_pair(a, make_pair(b, c));
+    }
+
+    sort(measurements.begin(), measurements.end());
+
+    int out = 0;
+    pair<int, int> max = make_pair(G, 1); // milk, number
+
+    for (int i = 0; i < N; ++i)
+    {
+        
+    }
+    
+    return 0;
+}

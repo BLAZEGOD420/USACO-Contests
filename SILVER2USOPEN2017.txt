@@ -1,0 +1,85 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int N, M, out, tri[322], s[500][50], ns[500][50];
+
+
+int main() {
+	ifstream fin ("cownomics.in");
+	ofstream fout ("cownomics.out");
+	
+	fin >> N >> M;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			char c;
+			fin >> c;
+			if (c == 'A') {
+				s[i][j] = 0;
+			}
+			else if (c == 'C') {
+				s[i][j] = 1;
+			}
+			else if (c == 'G') {
+				s[i][j] = 2;
+			}
+			else {
+				s[i][j] = 3;
+			}
+		}
+
+	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			char c;
+			fin >> c;
+			if (c == 'A') {
+				ns[i][j] = 0;
+			}
+			else if (c == 'C') {
+				ns[i][j] = 1;
+			}
+			else if (c == 'G') {
+				ns[i][j] = 2;
+			}
+			else {
+				ns[i][j] = 3;
+			}
+		}
+
+	}
+
+	for (int i = 0; i < M; i++) {
+		for (int j = i + 1; j < M; j++) {
+			for (int k = j + 1; k < M; k++) {
+				int good = 1;
+
+				for (int a = 0; a < N; a++) {
+					tri[100 * ns[a][i] + 10 * ns[a][j] + ns[a][k]] = 1;
+				}
+
+				for (int a = 0; a < N; a++) {
+					if (tri[100 * s[a][i] + 10 * s[a][j] + s[a][k]]) {
+						good = 0;
+						break;
+					}
+				}
+
+				for (int a = 0; a < N; a++) {
+					tri[100 * ns[a][i] + 10 * ns[a][j] + ns[a][k]] = 0;
+				}
+
+				if (good) {
+					out += 1;
+				}
+			}
+		}
+	}
+	
+	fout << out;	
+}

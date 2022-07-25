@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+#include <set>
+#include <queue>
+
+using namespace std;
+
+int onePrefix[100001];
+int twoPrefix[100001];
+int threePrefix[100001];
+
+int main()
+{
+	ifstream fin ("bcount.in");
+	ofstream fout("bcount.out");
+	int N, Q;
+	fin >> N >> Q;
+
+	for (int breed, i = 1; i <= N; ++i)
+	{
+		fin >> breed;
+		switch(breed)
+		{
+			case 1:
+				onePrefix[i]++;
+				break;
+			case 2:
+				twoPrefix[i]++;
+				break;
+			case 3:
+				threePrefix[i]++;
+				break;
+		}
+	}
+
+	for (int i = 1; i <= N; ++i)
+	{
+		onePrefix[i] += onePrefix[i - 1];
+		twoPrefix[i] += twoPrefix[i - 1];
+		threePrefix[i] += threePrefix[i - 1];
+	}
+
+	for (int a, b, i = 0; i < Q; ++i)
+	{
+		fin >> a >> b;
+		fout << onePrefix[b] - onePrefix[a - 1] << " " << twoPrefix[b] - twoPrefix[a - 1] << " " << threePrefix[b] - threePrefix[a - 1] << endl;
+	}
+	return 0;
+}

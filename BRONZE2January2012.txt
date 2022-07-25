@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int diffs[1000001];
+int nums[1000001];
+int heights[25001];
+
+int main {
+	ifstream ("stacking.in") fin;
+	ofstream ("stacking.out") fout;
+
+	int N, K;
+	fin >> N >> K;
+
+	for (int A, B, i = 0; i < K; i++) {
+		fin >> A >> B;
+		diffs[A]++;
+		diffs[B + 1]--;
+	}
+
+	for (int i = 1; i < N + 1; i++) {
+		nums[i] = diffs[i] + nums[i - 1];
+		heights[nums[i]]++;
+	}
+
+	for (int count = 0, i = 0; i <= K; ++i)
+	{
+		count += heights[i];
+		if (count >= (N - 1) / 2 + 1)
+		{
+			cout << i << endl;
+			break;
+		}
+	}
+
+	return 0;
+}

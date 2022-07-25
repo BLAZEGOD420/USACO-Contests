@@ -1,0 +1,50 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+#include <set>
+#include <map>
+using namespace std;
+
+int main() {
+
+	ifstream fin ("race.in");
+	ofstream fout ("race.out");
+
+	int K, N;
+	fin >> K >> N;
+	
+	int speeds[N];
+	for (int i = 0; i < N; i++) {
+		fin >> speeds[i];
+	}
+	
+	for (auto X : speeds) {
+		int dist = K, time = 0;
+		
+		for (int speed = 1;;speed++) {
+			dist -= speed;
+			time++;
+			if (dist <= 0) {
+				break;
+			}
+			if (speed >= X) {
+				dist -= speed;
+				time++;
+				if (dist <= 0) {
+					break;
+				}
+			}
+		}
+		
+		fout << time << endl;
+	}
+	
+
+	
+}

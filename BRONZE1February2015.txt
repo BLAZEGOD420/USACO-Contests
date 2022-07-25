@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+string S, T, final;
+int length, location;
+
+int main() {
+	ifstream fin ("censor.in");
+	ofstream fout ("censor.out");
+	
+	fin >> S;
+	fin >> T;
+	
+	length = T.length();
+	
+	for (auto &ch : S) {
+		final += ch;
+		if (final.length() >= length && final.substr(final.length() - length, final.length()) == T) {
+			final.erase(final.length() - length, length);
+		}
+	}
+	fout << final;
+	
+}

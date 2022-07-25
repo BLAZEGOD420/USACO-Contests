@@ -1,0 +1,82 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+using namespace std;
+
+bool comparePrice(pair<int, int> a, pair<int, int> b)
+{
+    return (a.second > b.second);
+}
+
+int milk[100001];
+pair<int, int> buying[100001];
+long long rentingPrefixSum[100001];
+long long sellingPrefixSum[100001];
+
+int main()
+{
+	//breaks down into two things
+	//for the i number of cows that produce the most milk, the max amount of money that can be made from selling their milk + the max amount of money that can be made from selling the other N - i cows.
+	ifstream fin ("rental.in");
+	ofstream fout ("rental.out");
+	
+	int M, N, R;
+	fin >> N >> M >> R;
+	
+	for (int c, i = 1; i <= N; ++i)
+	{
+		fin >> c;
+		milk[i] = c;
+	}
+	for (int q, p, i = 1; i <= M; ++i)
+	{
+		fin >> q >> p;
+		buying[i] = make_pair(q, p);
+	}
+	for (int r, i = 1; i <= R; ++i)
+	{
+		fin >> r;
+		rentingPrefixSum[i] = r;
+	}
+	
+	//sorting cows decrease order for the amount of milk they produce
+	sort(milk + 1, milk + N + 1, greater<int>());	
+
+	//prefix sum that holds the prices for renting the cows, decreasing order
+	sort(rentingPrefixSum + 1, rentingPrefixSum + R + 1, greater<long long>());
+  
+	for (int i = 1; i <= R; ++i) rentingPrefixSum[i] = rentingPrefixSum[i] + rentingPrefixSum[i - 1];
+	
+	//sort the shops by buying price
+	sort(buying + 1, buying + M + 1, comparePrice);
+	
+	//find the amount of money earned by selling milk of the best i cows
+	int shop = 1;
+	int cow = 1;
+	for (; cow <= N; cow++)
+	{
+		sellingPrefixSum[cow] = sellingPrefixSum[cow - 1];
+		while(milk[cow] > 0 && shop <= M)
+		{
+			int amount = min(milk[cow], buying[shop].first);
+			sellingPrefixSum[cow] += amount * buying[shop].second;
+			milk[cow] -= amount;
+			buying[shop].first -= amount;
+			if (buying[shop].first == 0) shop++;
+		}
+	}
+
+	long long answer = 0;
+	long long temp;
+
+	for (int i = 1; i <= N; i++)
+	{
+		temp = sellingPrefixSum[i] + rentingPrefixSum[N - i];
+		if (temp > answer) answer = temp;
+	}
+
+	fout << answer << endl;
+	
+	return 0;
+}

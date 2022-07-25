@@ -1,0 +1,45 @@
+import sys
+
+N = int(sys.stdin.readline().rstrip("\n"))
+
+cows = {}
+
+def comfortable(cow):
+	if cow in cows:
+		if len(cows[cow]) == 3:
+			neighbors = [(cow[0], cow[1] + 1), (cow[0], cow[1] - 1), (cow[0] + 1, cow[1]), (cow[0] - 1, cow[1])]
+			for neighbor in neighbors:
+				if neighbor not in cows[cow]:
+					return [neighbor]
+	return []
+
+for i in range(1, N + 1):
+	line = tuple([int(i) for i in sys.stdin.readline().rstrip("\n").split()])
+	next = [line]
+	while next:
+		cow = next.pop(0)
+		if cow in cows:
+			continue
+
+		cows[cow] = []
+		one = (cow[0], cow[1] + 1)
+		two = (cow[0], cow[1] - 1)
+		three = (cow[0] + 1, cow[1])
+		four = (cow[0] - 1, cow[1])
+		if one in cows:
+			cows[one].append(cow)
+			cows[cow].append(one)
+		if two in cows:
+			cows[two].append(cow)
+			cows[cow].append(two)
+		if three in cows:
+			cows[three].append(cow)
+			cows[cow].append(three)
+		if four in cows:
+			cows[four].append(cow)
+			cows[cow].append(four)
+		next += comfortable(cow)
+		for j in [one, two, three, four]:
+			next += comfortable(j)
+
+	print(len(cows) - i)

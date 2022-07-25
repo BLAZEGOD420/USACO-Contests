@@ -1,0 +1,77 @@
+#include <iostream>
+#include <algorithm>
+#include <utility>
+#include <bits/stdc++.h>
+#include <set>
+#include <queue>
+
+using namespace std;
+
+vector<pair<int, int>> cows;
+
+bool compare(int a, int b)
+{
+    if (cows[a].first == cows[b].first)
+    {
+        return a < b;
+    }
+    else
+    {
+        return cows[a].first < cows[b].first;
+    }
+}
+
+int main()
+{
+    ifstream fin ("convention2.in");
+    ofstream fout ("convention2.out");
+    int N;
+    fin >> N;
+    // [start, time]
+    cows.resize(N);
+    int order[N];
+    for (int a, t, i = 0; i < N; ++i)
+    {
+        fin >> a >> t;
+        cows[i] = make_pair(a, t);
+        order[i] = i;
+    }
+    
+    sort(order, order+N, compare);
+
+    int temp, next, out = 0;
+    priority_queue<int> line;
+    line.push(-order[0]);
+    int endTime = cows[order[0]].first;
+
+    for (int i = 1; i < N || !line.empty();)
+    {
+        if (line.empty())
+        {
+            temp = i;
+            for (; i < N; i++)
+            {
+                if (cows[order[i]].first == cows[order[temp]].first) line.push(-order[i]);
+                else break;
+            }
+            next = -line.top();
+            line.pop();
+            endTime = cows[next].first + cows[next].second;
+        }
+        else
+        {
+            next = -line.top();
+            line.pop();
+            out = max(out, endTime - cows[next].first);
+            endTime += cows[next].second;
+        }
+
+        for (; i < N; i++)
+        {
+            if (cows[order[i]].first <= endTime) line.push(-order[i]);
+            else break;
+        } 
+    }
+    fout << out << endl;
+    return 0;
+}

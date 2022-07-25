@@ -1,0 +1,24 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int buckets[3], capacity[3];
+
+int main() {
+	ifstream fin ("mixmilk.in");
+	ofstream fout ("mixmilk.out");
+	
+	fin >> capacity[0] >> buckets[0];
+	fin >> capacity[1] >> buckets[1];
+	fin >> capacity[2] >> buckets[2];
+
+	for (int i = 0; i < 100; i++) {
+		int amount = min(buckets[i % 3], capacity[(i + 1) % 3] - buckets[(i + 1) % 3]);
+		buckets[i % 3] -= amount;
+		buckets[(i + 1) % 3] += amount;
+	}
+	fout << buckets[0] << endl << buckets[1] << endl << buckets[2];
+}

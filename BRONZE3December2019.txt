@@ -1,0 +1,61 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <array>
+#include <climits>
+#include <vector>
+using namespace std;
+
+int N;
+string cows[8];
+
+
+int main() {
+	ifstream fin ("lineup.in");
+	ofstream fout ("lineup.out");
+
+	cows[0] = "Bessie";
+	cows[1] = "Buttercup";
+	cows[2] = "Belinda";
+	cows[3] = "Beatrice";
+	cows[4] = "Bella";
+	cows[5] = "Blue";
+	cows[6] = "Betsy";
+	cows[7] = "Sue";
+
+	fin >> N;
+
+	string pairs[N][2], line[6];
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < 6; j++) {
+			fin >> line[j];
+		}
+		pairs[i][0] = line[0];
+		pairs[i][1] = line[5];
+	}
+	
+	sort(begin(cows), end(cows));
+	
+	do {
+		bool good = true;
+		
+		for (int i = 0; i < N; i++) {
+			if (abs(find(cows, cows+8, pairs[i][0]) - find(cows, cows+8, pairs[i][1])) != 1) {
+				good = false;
+				break;
+			}
+		}
+
+		if (good) {
+			for (int i = 0; i < 8; i++) {
+				fout << cows[i] << endl;
+			}
+			break;
+		}
+	}
+	while (next_permutation(cows, cows + 8));
+}
